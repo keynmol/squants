@@ -13,6 +13,8 @@ import org.scalacheck.Properties
 import squants.QuantityChecks
 import squants.motion.{CubicMetersPerSecond, RadiansPerSecond}
 import squants.time.Seconds
+import squants.motion.VolumeFlowRateUnit
+import squants.motion.AngularVelocity
 
 /**
  * @author  garyKeorkunian
@@ -21,8 +23,8 @@ import squants.time.Seconds
  */
 object SpaceChecks extends Properties("Space") with QuantityChecks {
 
-  implicit val tolVfr = CubicMetersPerSecond(tol)
-  implicit val tolAngularVelocity = RadiansPerSecond(tol)
+  implicit val tolVfr: VolumeFlowRateUnit = CubicMetersPerSecond(tol)
+  implicit val tolAngularVelocity: AngularVelocity = RadiansPerSecond(tol)
 
   property("Area = Length * Length") = forAll(posNum, posNum) { (length1: TestData, length2: TestData) ⇒
     SquareMeters(length1 * length2) == Meters(length1) * Meters(length2) &&

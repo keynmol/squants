@@ -5,13 +5,28 @@ import sbt.Keys._
 import sbt._
 import com.typesafe.sbt.osgi.SbtOsgi
 import com.typesafe.sbt.osgi.SbtOsgi.autoImport._
+import scalajscrossproject.JSPlatform
+import sbtcrossproject.JVMPlatform
+import dotty.tools.sbtplugin.DottyPlugin.autoImport._
 
 object Versions {
-  val Scala = "2.11.12" // Don't use 2.12 yet to avoid troubles with native
+  val Scala12 = "2.12.12" // Don't use 2.12 yet to avoid troubles with native
+  val Scala13 = "2.13.3"
+  val Scala11 = "2.11.12"
+  val Dotty   = "0.26.0-RC1"
+
   val scalaJSVersion =
     Option(System.getenv("SCALAJS_VERSION")).getOrElse("0.6.33")
+  
   val ScalaCross =
-    Seq("2.11.12", "2.12.11", "2.13.3")
+    Seq(Scala11, Scala12, Scala13, Dotty)
+  
+  def crossScalaVersions(platform: sbtcrossproject.Platform) = platform match {
+    case NativePlatform => Seq(Scala11)
+    case JSPlatform     => ScalaCross.filterNot(_ == Dotty)
+    case JVMPlatform    => ScalaCross
+  }
+
 
   val ScalaTest = "3.2.1"
   val ScalaCheck = "1.14.3"
@@ -19,9 +34,15 @@ object Versions {
 }
 
 object Dependencies {
-  val scalaTest = Def.setting(Seq("org.scalatest" %%% "scalatest" % Versions.ScalaTest % Test))
-  val scalaCheck = Def.setting(Seq("org.scalacheck" %%% "scalacheck" % Versions.ScalaCheck % Test))
-  val json4s = Def.setting(Seq("org.json4s" %% "json4s-native" % Versions.Json4s % Test))
+  val scalaTest = Def.setting(
+    Seq("org.scalatest" %%% "scalatest" % Versions.ScalaTest % Test).map(_.withDottyCompat(scalaVersion.value))
+  )
+  val scalaCheck = Def.setting(
+    Seq("org.scalacheck" %%% "scalacheck" % Versions.ScalaCheck % Test).map(_.withDottyCompat(scalaVersion.value))
+  )
+  val json4s = Def.setting(
+    Seq("org.json4s" %% "json4s-native" % Versions.Json4s % Test).map(_.withDottyCompat(scalaVersion.value))
+  )
 }
 
 object Resolvers {
@@ -53,7 +74,8 @@ object Compiler {
     "-Xlint:missing-interpolator",
     "-Ywarn-unused",
     "-Ywarn-numeric-widen",
-    "-deprecation:false"
+    "-deprecation:false",
+    "-language:implicitConversions"
   )
 
   lazy val defaultCompilerSwitches = Seq(
@@ -61,7 +83,10 @@ object Compiler {
     "-deprecation",
     "-encoding", "UTF-8",       // yes, this is 2 args
     "-Xfatal-warnings",
-    "-unchecked",
+    "-unchecked"
+  )
+
+  lazy val dottyRemovedSwitches = Seq(
     "-Xfuture",
     "-Ywarn-dead-code"
   )
@@ -73,14 +98,13 @@ object Compiler {
       "-encoding", "UTF-8",
     ),
     scalacOptions := {CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, scalaMajor)) if scalaMajor >= 13 => scalacOptions.value ++ defaultCompilerSwitches ++ newerCompilerLintSwitches
-      case Some((2, scalaMajor)) if scalaMajor >= 11 => scalacOptions.value ++ defaultCompilerSwitches ++ newerCompilerLintSwitches :+ "-Ywarn-unused-import"
-      case _ => scalacOptions.value ++ defaultCompilerSwitches
-    }},
+      case Some((2, scalaMajor)) if scalaMajor >= 13 => defaultCompilerSwitches ++ newerCompilerLintSwitches
+      case Some((2, scalaMajor)) if scalaMajor >= 11 => defaultCompilerSwitches ++ newerCompilerLintSwitches :+ "-Ywarn-unused-import"
+      case Some((2, _))                              => defaultCompilerSwitches ++ dottyRemovedSwitches
+      case _ => defaultCompilerSwitches
+    }}.distinct,
 
-    scalaVersion in ThisBuild := Versions.Scala,
-
-    crossScalaVersions := Versions.ScalaCross
+    scalaVersion := Versions.Scala12
   )
 
 }

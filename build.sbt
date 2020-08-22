@@ -34,27 +34,28 @@ lazy val squants =
   .in(file("."))
   .settings(defaultSettings: _*)
   .jvmConfigure(
-    _.enablePlugins(TutPlugin, SbtOsgi)
+    _.enablePlugins(MdocPlugin, SbtOsgi)
   )
   .jvmSettings(
     osgiSettings,
-    scalacOptions in Tut --= Seq("-Ywarn-unused-import", "-Ywarn-unused:imports"),
-    tutTargetDirectory := file("."),
-    tutSourceDirectory := file("shared") / "src" / "main" / "tut",
+    scalacOptions in mdoc := Seq(),//Seq("-Ywarn-unused-import", "-Ywarn-unused:imports", "-Xlint:_,-missing-interpolator"),
+    mdocOut := file("."),
+    mdocIn := file("shared") / "src" / "main" / "tut",
     parallelExecution in Test := false,
-    skip.in(publish) := customScalaJSVersion.isDefined
+    skip.in(publish) := customScalaJSVersion.isDefined,
+    crossScalaVersions := Versions.crossScalaVersions(JVMPlatform),
   )
   .jvmSettings(Tests.defaultSettings: _*)
   .jsSettings(
     parallelExecution in Test := false,
     excludeFilter in Test := "*Serializer.scala" || "*SerializerSpec.scala",
-    scalacOptions in Tut --= Seq("-Ywarn-unused-import", "-Ywarn-unused:imports"),
+    crossScalaVersions := Versions.crossScalaVersions(JSPlatform)
   )
   .jsSettings(Tests.defaultSettings: _*)
   .nativeSettings(
     skip in publish := true,
-    sources in (Compile, doc) := List(), // Can't build docs in native
-    sources in (Compile, test) := List() // Can't yet compile in native
+    crossScalaVersions := Versions.crossScalaVersions(NativePlatform),
+    scalaVersion := Versions.Scala11
   )
 
 lazy val root = project.in(file("."))

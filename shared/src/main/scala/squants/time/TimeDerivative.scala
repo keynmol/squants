@@ -10,6 +10,8 @@ package squants.time
 
 import squants.Quantity
 
+import squants.SquantifiedDouble
+
 /**
  * Represents a rate of change over time of the integral quantity
  *
