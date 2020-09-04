@@ -11,7 +11,8 @@ package squants.thermal
 import org.scalacheck.Properties
 import squants.QuantityChecks
 import org.scalacheck.Prop._
-import squants.energy.Joules
+import squants.energy.{Joules, Energy}
+import squants.thermal.ThermalCapacity
 
 /**
  * @author  garyKeorkunian
@@ -46,9 +47,9 @@ object ThermalChecks extends Properties("Thermal") with QuantityChecks {
 
   property("ThermalCapacity * Temperature = Energy") = forAll(posNum, posNum) { (thermCap: TestData, temp: TestData) ⇒
 
-    implicit val tempTol = Kelvin(tol)
-    implicit val thermTol = JoulesPerKelvin(tol)
-    implicit val energyTol = Joules(1e-12)
+    implicit val tempTol: Temperature = Kelvin(tol)
+    implicit val thermTol: ThermalCapacity  = JoulesPerKelvin(tol)
+    implicit val energyTol: Energy = Joules(1e-12)
 
     Joules(thermCap * temp) =~ JoulesPerKelvin(thermCap) * Kelvin(temp) &&
       Joules(thermCap * temp) =~ Kelvin(temp) * JoulesPerKelvin(thermCap) &&

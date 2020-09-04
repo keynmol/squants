@@ -120,7 +120,7 @@ abstract class Quantity[A <: Quantity[A, _], N](implicit val sqNum: SquantsNumer
    * @return Quantity
    */
   def negate: A = unit(-value).asInstanceOf[A]
-  def unary_-(): A = negate
+  def unary_-: A = negate
 
   /**
    * Returns the absolute value of this Quantity

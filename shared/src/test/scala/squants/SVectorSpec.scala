@@ -8,7 +8,7 @@
 
 package squants
 
-import squants.space.{Degrees, Kilometers, SquareKilometers, SquareMeters}
+import squants.space.{Degrees, Kilometers, SquareKilometers, SquareMeters, Length}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -78,13 +78,13 @@ class SVectorSpec extends AnyFlatSpec with Matchers {
 
   it should "map to another DoubleVector" in {
     val v = SVector(1, 2, 3)
-    val squared = v.map[Double](Math.pow(_, 2))
+    val squared: DoubleVector = v.map[Double](Math.pow(_, 2))
     squared.equals(SVector(1, 4, 9)) should be(right = true)
   }
 
   it should "map to QuantityVector" in {
     val v = SVector(1, 2, 3)
-    val lengthVector = v.map[Length](Meters.apply)
+    val lengthVector: QuantityVector[Length] = v.map[Length](el => Meters(el))
     lengthVector.equals(SVector(Meters(1), Meters(2), Meters(3))) should be(right = true)
   }
 
@@ -237,7 +237,7 @@ class SVectorSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "normalize a Vector" in {
-    implicit val tol = Kilometers(1e-15)
+    implicit val tol: Length  = Kilometers(1e-15)
     val x = Kilometers(3)
     val y = Kilometers(4)
     val z = Kilometers(5)
@@ -367,7 +367,7 @@ class SVectorSpec extends AnyFlatSpec with Matchers {
 
   it should "throw an exception on cross product two Vectors with 7 coordinates each" in {
     import scala.language.implicitConversions
-    implicit def nToQ(d: Int) = Kilometers(d)
+    implicit def nToQ(d: Int): Length = Kilometers(d)
     val v1 = SVector[Length](1, 2, 3, 5, 6, 7)
     val v2 = SVector(1, 2, 3, 5, 6, 7)
     intercept[UnsupportedOperationException] {
@@ -377,7 +377,7 @@ class SVectorSpec extends AnyFlatSpec with Matchers {
 
   it should "throw an exception on crossProduct of arbitrary size" in {
     import scala.language.implicitConversions
-    implicit def nToQ(d: Int) = Kilometers(d)
+    implicit def nToQ(d: Int): Length = Kilometers(d)
     val qv3 = SVector[Length](1, 2, 3)
     val qv4 = SVector[Length](1, 2, 3, 4)
     val qv7 = SVector[Length](1, 2, 3, 5, 6, 7)

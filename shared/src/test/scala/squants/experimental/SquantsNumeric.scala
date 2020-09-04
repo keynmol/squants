@@ -46,7 +46,7 @@ trait SquantsNumeric[T] extends Ordering[T] {
   implicit def mkSquantsNumericOps(lhs: T): Ops = new Ops(lhs)
 }
 
-object SquantsNumeric extends ScalaVersionSpecificNumericInstances {
+object SquantsNumeric {// extends ScalaVersionSpecificNumericInstances {
 
   trait IntIsSquantsNumeric extends SquantsNumeric[Int] {
     def plus(x: Int, y: Int): Int = x + y
@@ -141,4 +141,6 @@ object SquantsNumeric extends ScalaVersionSpecificNumericInstances {
   implicit object IntIsSquantsNumeric extends IntIsSquantsNumeric with Ordering.IntOrdering
   implicit object LongIsSquantsNumeric extends LongIsSquantsNumeric with Ordering.LongOrdering
   implicit object BigDecimalIsSquantsNumeric extends BigDecimalIsSquantsNumeric with Ordering.BigDecimalOrdering
+  implicit object FloatIsSquantsNumeric extends FloatIsSquantsNumeric with Ordering.FloatOrdering
+  implicit object DoubleIsSquantsNumeric extends DoubleIsSquantsNumeric with Ordering.DoubleOrdering
 }

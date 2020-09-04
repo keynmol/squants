@@ -161,7 +161,7 @@ class MoneySpec extends AnyFlatSpec with Matchers {
   it should "return a proper result on max/min operation with an implicit MoneyContext in scope" in {
     val r1 = CurrencyExchangeRate(USD(1), JPY(100))
     val r2 = CurrencyExchangeRate(USD(1), EUR(.75))
-    implicit val moneyContext = MoneyContext(USD, defaultCurrencySet, List(r1, r2))
+    implicit val moneyContext: MoneyContext = MoneyContext(USD, defaultCurrencySet, List(r1, r2))
     val x = USD(100)
     val y = JPY(100)
     x.moneyMax(y) should be(x)

@@ -28,14 +28,14 @@ object Versions {
   }
 
 
-  val ScalaTest = "3.2.1"
+  val ScalaTest = "3.2.2"
   val ScalaCheck = "1.14.3"
   val Json4s = "3.6.9"
 }
 
 object Dependencies {
   val scalaTest = Def.setting(
-    Seq("org.scalatest" %%% "scalatest" % Versions.ScalaTest % Test).map(_.withDottyCompat(scalaVersion.value))
+    Seq("org.scalatest" %%% "scalatest" % Versions.ScalaTest % Test)//.map(_.withDottyCompat(scalaVersion.value))
   )
   val scalaCheck = Def.setting(
     Seq("org.scalacheck" %%% "scalacheck" % Versions.ScalaCheck % Test).map(_.withDottyCompat(scalaVersion.value))
@@ -74,8 +74,8 @@ object Compiler {
     "-Xlint:missing-interpolator",
     "-Ywarn-unused",
     "-Ywarn-numeric-widen",
-    "-deprecation:false",
-    "-language:implicitConversions"
+    "-deprecation:false"
+    
   )
 
   lazy val defaultCompilerSwitches = Seq(
@@ -83,7 +83,8 @@ object Compiler {
     "-deprecation",
     "-encoding", "UTF-8",       // yes, this is 2 args
     "-Xfatal-warnings",
-    "-unchecked"
+    "-unchecked",
+    "-language:implicitConversions"
   )
 
   lazy val dottyRemovedSwitches = Seq(
@@ -160,75 +161,75 @@ object Console {
   val defaultSettings = Seq(
   scalacOptions in (Compile, console) ~= (_ filterNot (Set("-Xfatal-warnings", "-Ywarn-unused-import").contains)),
 
-  initialCommands in console := """
-     import scala.language.postfixOps,
-         squants._,
-         squants.energy._,
-         squants.electro._,
-         squants.information._,
-         squants.market._,
-         squants.mass._,
-         squants.motion._,
-         squants.photo._,
-         squants.radio._,
-         squants.space._,
-         squants.thermal._,
-         squants.time._,
-         squants.experimental.formatter._,
-         squants.experimental.unitgroups.UnitGroup,
-         squants.DimensionlessConversions._,
-         squants.electro.CapacitanceConversions._,
-         squants.electro.ConductivityConversions._,
-         squants.electro.ElectricalConductanceConversions._,
-         squants.electro.ElectricalResistanceConversions._,
-         squants.electro.ElectricChargeConversions._,
-         squants.electro.ElectricCurrentConversions._,
-         squants.electro.ElectricPotentialConversions._,
-         squants.electro.InductanceConversions._,
-         squants.electro.MagneticFluxConversions._,
-         squants.electro.MagneticFluxDensityConversions._,
-         squants.electro.ResistivityConversions._,
-         squants.energy.EnergyConversions._,
-         squants.energy.EnergyDensityConversions._,
-         squants.energy.PowerConversions._,
-         squants.energy.PowerRampConversions._,
-         squants.energy.SpecificEnergyConversions._,
-         squants.information.InformationConversions._,
-         squants.market.MoneyConversions._,
-         squants.mass.AreaDensityConversions._,
-         squants.mass.ChemicalAmountConversions._,
-         squants.mass.DensityConversions._,
-         squants.mass.MassConversions._,
-         squants.motion.AccelerationConversions._,
-         squants.motion.AngularVelocityConversions._,
-         squants.motion.ForceConversions._,
-         squants.motion.JerkConversions._,
-         squants.motion.MassFlowConversions._,
-         squants.motion.MomentumConversions._,
-         squants.motion.PressureConversions._,
-         squants.motion.VelocityConversions._,
-         squants.motion.VolumeFlowConversions._,
-         squants.motion.YankConversions._,
-         squants.photo.IlluminanceConversions._,
-         squants.photo.LuminanceConversions._,
-         squants.photo.LuminousEnergyConversions._,
-         squants.photo.LuminousExposureConversions._,
-         squants.photo.LuminousFluxConversions._,
-         squants.photo.LuminousIntensityConversions._,
-         squants.radio.IrradianceConversions._,
-         squants.radio.RadianceConversions._,
-         squants.radio.RadiantIntensityConversions._,
-         squants.radio.SpectralIntensityConversions._,
-         squants.radio.SpectralPowerConversions._,
-         squants.space.AngleConversions._,
-         squants.space.AreaConversions._,
-         squants.space.LengthConversions._,
-         squants.space.SolidAngleConversions._,
-         squants.space.VolumeConversions._,
-         squants.thermal.TemperatureConversions._,
-         squants.thermal.ThermalCapacityConversions._,
-         squants.time.FrequencyConversions._,
-         squants.time.TimeConversions._""".stripMargin
+  // initialCommands in console := """
+  //    import scala.language.postfixOps,
+  //        squants._,
+  //        squants.energy._,
+  //        squants.electro._,
+  //        squants.information._,
+  //        squants.market._,
+  //        squants.mass._,
+  //        squants.motion._,
+  //        squants.photo._,
+  //        squants.radio._,
+  //        squants.space._,
+  //        squants.thermal._,
+  //        squants.time._,
+  //        squants.experimental.formatter._,
+  //        squants.experimental.unitgroups.UnitGroup,
+  //        squants.DimensionlessConversions._,
+  //        squants.electro.CapacitanceConversions._,
+  //        squants.electro.ConductivityConversions._,
+  //        squants.electro.ElectricalConductanceConversions._,
+  //        squants.electro.ElectricalResistanceConversions._,
+  //        squants.electro.ElectricChargeConversions._,
+  //        squants.electro.ElectricCurrentConversions._,
+  //        squants.electro.ElectricPotentialConversions._,
+  //        squants.electro.InductanceConversions._,
+  //        squants.electro.MagneticFluxConversions._,
+  //        squants.electro.MagneticFluxDensityConversions._,
+  //        squants.electro.ResistivityConversions._,
+  //        squants.energy.EnergyConversions._,
+  //        squants.energy.EnergyDensityConversions._,
+  //        squants.energy.PowerConversions._,
+  //        squants.energy.PowerRampConversions._,
+  //        squants.energy.SpecificEnergyConversions._,
+  //        squants.information.InformationConversions._,
+  //        squants.market.MoneyConversions._,
+  //        squants.mass.AreaDensityConversions._,
+  //        squants.mass.ChemicalAmountConversions._,
+  //        squants.mass.DensityConversions._,
+  //        squants.mass.MassConversions._,
+  //        squants.motion.AccelerationConversions._,
+  //        squants.motion.AngularVelocityConversions._,
+  //        squants.motion.ForceConversions._,
+  //        squants.motion.JerkConversions._,
+  //        squants.motion.MassFlowConversions._,
+  //        squants.motion.MomentumConversions._,
+  //        squants.motion.PressureConversions._,
+  //        squants.motion.VelocityConversions._,
+  //        squants.motion.VolumeFlowConversions._,
+  //        squants.motion.YankConversions._,
+  //        squants.photo.IlluminanceConversions._,
+  //        squants.photo.LuminanceConversions._,
+  //        squants.photo.LuminousEnergyConversions._,
+  //        squants.photo.LuminousExposureConversions._,
+  //        squants.photo.LuminousFluxConversions._,
+  //        squants.photo.LuminousIntensityConversions._,
+  //        squants.radio.IrradianceConversions._,
+  //        squants.radio.RadianceConversions._,
+  //        squants.radio.RadiantIntensityConversions._,
+  //        squants.radio.SpectralIntensityConversions._,
+  //        squants.radio.SpectralPowerConversions._,
+  //        squants.space.AngleConversions._,
+  //        squants.space.AreaConversions._,
+  //        squants.space.LengthConversions._,
+  //        squants.space.SolidAngleConversions._,
+  //        squants.space.VolumeConversions._,
+  //        squants.thermal.TemperatureConversions._,
+  //        squants.thermal.ThermalCapacityConversions._,
+  //        squants.time.FrequencyConversions._,
+  //        squants.time.TimeConversions._""".stripMargin
   )
 }
 
