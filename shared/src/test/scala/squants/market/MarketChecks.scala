@@ -6,7 +6,8 @@
 **                                                                      **
 \*                                                                      */
 
-package squants.market
+package squants
+package market
 
 import org.scalacheck.Properties
 import squants.QuantityChecks

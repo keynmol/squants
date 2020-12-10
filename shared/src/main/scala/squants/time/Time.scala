@@ -13,7 +13,7 @@ import squants.space.Area
 import squants.radio.{ AreaTime, SquareMeterSeconds }
 
 import scala.concurrent.duration.{ DAYS, Duration, HOURS, MICROSECONDS, MILLISECONDS, MINUTES, NANOSECONDS, SECONDS }
-import scala.language.implicitConversions
+// import scala.language.implicitConversions
 
 /**
  * Represents a quantity of Time

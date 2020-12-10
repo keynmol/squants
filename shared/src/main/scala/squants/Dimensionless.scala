@@ -112,7 +112,7 @@ object DimensionlessConversions {
   lazy val thousand = Each(1e3)
   lazy val million = Each(1e6)
 
-  import scala.language.implicitConversions
+  // import scala.language.implicitConversions
 
   implicit class DimensionlessConversions[A](n: A)(implicit num: Numeric[A]) {
     def percent = Percent(n)

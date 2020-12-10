@@ -6,11 +6,12 @@
 **                                                                      **
 \*                                                                      */
 
-package squants.time
+package squants
+package time
 
 import squants.Quantity
 
-import squants.SquantifiedDouble
+import squants.SquantsImplicitConversions._
 
 /**
  * Represents a rate of change over time of the integral quantity

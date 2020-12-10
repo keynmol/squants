@@ -13,24 +13,21 @@ object Versions {
   val Scala12 = "2.12.12" // Don't use 2.12 yet to avoid troubles with native
   val Scala13 = "2.13.3"
   val Scala11 = "2.11.12"
-  val Dotty   = "0.26.0-RC1"
-
-  val scalaJSVersion =
-    Option(System.getenv("SCALAJS_VERSION")).getOrElse("0.6.33")
+  val Dotty   = "3.0.0-M2"
   
   val ScalaCross =
     Seq(Scala11, Scala12, Scala13, Dotty)
   
   def crossScalaVersions(platform: sbtcrossproject.Platform) = platform match {
     case NativePlatform => Seq(Scala11)
-    case JSPlatform     => ScalaCross.filterNot(_ == Dotty)
+    case JSPlatform     => ScalaCross
     case JVMPlatform    => ScalaCross
   }
 
 
-  val ScalaTest = "3.2.2"
-  val ScalaCheck = "1.14.3"
-  val Json4s = "3.6.9"
+  val ScalaTest = "3.2.3"
+  val ScalaCheck = "1.15.1"
+  val Json4s = "3.6.10"
 }
 
 object Dependencies {
@@ -38,11 +35,11 @@ object Dependencies {
     Seq("org.scalatest" %%% "scalatest" % Versions.ScalaTest % Test)//.map(_.withDottyCompat(scalaVersion.value))
   )
   val scalaCheck = Def.setting(
-    Seq("org.scalacheck" %%% "scalacheck" % Versions.ScalaCheck % Test).map(_.withDottyCompat(scalaVersion.value))
+    Seq("org.scalacheck" %%% "scalacheck" % Versions.ScalaCheck % Test)//.map(_.withDottyCompat(scalaVersion.value))
   )
-  val json4s = Def.setting(
-    Seq("org.json4s" %% "json4s-native" % Versions.Json4s % Test).map(_.withDottyCompat(scalaVersion.value))
-  )
+  // val json4s = Def.setting(
+  //   Seq("org.json4s" %% "json4s-native" % Versions.Json4s % Test).map(_.withDottyCompat(scalaVersion.value))
+  // )
 }
 
 object Resolvers {
@@ -65,7 +62,7 @@ object Project {
 
     OsgiKeys.exportPackage := Seq("squants.*"),
 
-    OsgiKeys.privatePackage := Seq() // No private packages
+    OsgiKeys.privatePackage := Seq(), // No private packages,
   )
 }
 
@@ -121,8 +118,7 @@ object Tests {
     Seq(
       libraryDependencies ++=
         Dependencies.scalaTest.value ++
-        Dependencies.scalaCheck.value ++
-        Dependencies.json4s.value
+        Dependencies.scalaCheck.value
     )
 }
 

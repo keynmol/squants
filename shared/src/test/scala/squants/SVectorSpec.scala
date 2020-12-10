@@ -8,7 +8,7 @@
 
 package squants
 
-import squants.space.{Degrees, Kilometers, SquareKilometers, SquareMeters, Length}
+import squants.space.{Degrees, Kilometers, SquareKilometers, SquareMeters}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -366,7 +366,7 @@ class SVectorSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "throw an exception on cross product two Vectors with 7 coordinates each" in {
-    import scala.language.implicitConversions
+    // import scala.language.implicitConversions
     implicit def nToQ(d: Int): Length = Kilometers(d)
     val v1 = SVector[Length](1, 2, 3, 5, 6, 7)
     val v2 = SVector(1, 2, 3, 5, 6, 7)
@@ -376,7 +376,7 @@ class SVectorSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "throw an exception on crossProduct of arbitrary size" in {
-    import scala.language.implicitConversions
+    // import scala.language.implicitConversions
     implicit def nToQ(d: Int): Length = Kilometers(d)
     val qv3 = SVector[Length](1, 2, 3)
     val qv4 = SVector[Length](1, 2, 3, 4)

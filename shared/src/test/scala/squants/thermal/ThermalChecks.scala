@@ -12,7 +12,6 @@ import org.scalacheck.Properties
 import squants.QuantityChecks
 import org.scalacheck.Prop._
 import squants.energy.{Joules, Energy}
-import squants.thermal.ThermalCapacity
 
 /**
  * @author  garyKeorkunian

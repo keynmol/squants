@@ -57,6 +57,14 @@ lazy val squants =
     crossScalaVersions := Versions.crossScalaVersions(NativePlatform),
     scalaVersion := Versions.Scala11
   )
+  .nativeSettings(Tests.defaultSettings:_*)
+  .settings(
+    unmanagedSourceDirectories in Compile ++= {if(scalaVersion.value == Versions.Dotty)
+      Seq((baseDirectory in ThisBuild).value / "shared" / "src" / "main" / "scala-3")
+      else
+      Seq((baseDirectory in ThisBuild).value / "shared" / "src" / "main" / "scala-2")
+    }
+  )
 
 lazy val root = project.in(file("."))
   .settings(defaultSettings: _*)

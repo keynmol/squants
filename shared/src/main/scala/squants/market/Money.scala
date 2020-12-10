@@ -11,7 +11,7 @@ package squants.market
 import squants._
 
 import scala.util.{Failure, Success, Try}
-import scala.language.implicitConversions
+// import scala.language.implicitConversions
 import scala.math.BigDecimal.RoundingMode
 import scala.math.BigDecimal.RoundingMode.RoundingMode
 import java.util.Objects

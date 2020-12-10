@@ -12,10 +12,11 @@ import org.scalatest.TryValues
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-import scala.math.BigDecimal.RoundingMode
+// import scala.math.BigDecimal.RoundingMode
 import scala.util.{Failure, Try}
 import squants.thermal.{Celsius, Fahrenheit}
 import squants.time.{Hertz, Hours, Minutes}
+import scala.math.BigDecimal.RoundingMode
 
 /**
  * @author  garyKeorkunian

@@ -6,7 +6,8 @@
 **                                                                      **
 \*                                                                      */
 
-package squants.motion
+package squants
+package motion
 
 import squants.space.CubicMeters
 import squants.time.Seconds

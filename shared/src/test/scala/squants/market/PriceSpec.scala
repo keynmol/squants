@@ -6,11 +6,15 @@
 **                                                                      **
 \*                                                                      */
 
-package squants.market
+package squants
+package market
 
 import squants.space.{ Yards, Meters }
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+
+import squants.SquantsImplicitConversions._
+
 
 /**
  * @author  garyKeorkunian
